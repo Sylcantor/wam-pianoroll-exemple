@@ -11,15 +11,6 @@ class MidiTrack {
         this.pixijsContainer.innerHTML = "";
         this.pixijsContainer.appendChild(this.midiTrack.view);
 
-        //draw the countour of the midi track
-        /*
-        const rect = new PIXI.Graphics();
-        rect.lineStyle(1, 0x131B23, 1);
-        rect.drawRect(1, 0, this.midiTrack.renderer.width - 1, this.midiTrack.renderer.height - 1);
-    
-        this.midiTrack.stage.addChild(rect);
-        */
-
         this.selectedContainer = new Region(this.midiTrack,state);
         this.midiTrack.stage.addChild(this.selectedContainer);
     }
@@ -35,14 +26,6 @@ class MidiTrack {
     updateState(state) {
         this.state = state;
         this.selectedContainer.updateState(state);
-    }
-
-    resizeContainer(event) {
-      console.log("resizeContainer");
-        if (this.moove) {
-            console.log("resizeContainer");
-            console.log(event);
-        }
     }
 
     render() {

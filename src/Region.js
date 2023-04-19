@@ -27,8 +27,6 @@ class Region extends PIXI.Container {
         this.drawHitArea();
         this.initControls();
 
-
-
     }
 
     updateState(state) {
@@ -91,9 +89,6 @@ class Region extends PIXI.Container {
 
     onResizeMove(event) {
         if(this.resizeRight){
-
-            
-
             this.regionWidthEnd = event.data.global.x;
             //this.hitAreaRight.position.x = this.regionWidthEnd - 30;
             this.drawBackground();
@@ -104,6 +99,7 @@ class Region extends PIXI.Container {
             this.drawBackground();
             this.drawHitArea();
         }
+        this.renderNotes();
     }
 
     onMove(event) {
@@ -122,6 +118,7 @@ class Region extends PIXI.Container {
             this.moveStartY = event.data.global.y;
             this.drawBackground();
             this.drawHitArea();
+            this.renderNotes();
         }
     }
 

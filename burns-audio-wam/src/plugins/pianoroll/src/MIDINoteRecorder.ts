@@ -26,8 +26,6 @@ export class MIDINoteRecorder {
     }
 
     onMIDI(event: number[], timestamp: number) {
-        console.log("MIDI", event, timestamp);
-        
         let isNoteOn = (event[0] & 0xF0) == MIDI.NOTE_ON
         let isNoteOff = (event[0] & 0xF0) == MIDI.NOTE_OFF
 

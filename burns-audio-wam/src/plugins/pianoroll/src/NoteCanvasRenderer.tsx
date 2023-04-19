@@ -93,8 +93,6 @@ export class NoteCanvasRenderer {
             //instanciate midi track
             this.midiTrack = new MidiTrack(state);
         } else {
-            console.log("updating midi track state");
-            console.log(state);
             this.midiTrack.updateState(state);
             this.midiTrack.render();
         }

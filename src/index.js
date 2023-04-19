@@ -13,6 +13,7 @@ const demoDiv = document.getElementById("demo-div");
 const widgetLoadingDiv = document.getElementById("widget-loading");
 const loadingWheelDiv = document.getElementById("loading-wheel")
 
+const midiInputSelector = document.querySelector("#selectMidiInput");
 
 
 btnStartDemo.onclick = async () => {
@@ -109,8 +110,41 @@ async function startHost () {
         })
     }
 
+    setupMidiInput(audioCtx, pianoRoll_Instance.audioNode);
 
 
     loadingWheelDiv.style.display = "none";
     widgetLoadingDiv.style.display = "";
+}
+
+function setupMidiInput(audioContext, firstAudioNode){
+    if (navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess().then((midiAccess) => {
+            let currentInput;
+            const handleMidiMessage = (e) => {
+                if (!firstAudioNode) return;
+                audioContext.resume();
+                firstAudioNode.scheduleEvents({ type: 'wam-midi', time: firstAudioNode.context.currentTime, data: { bytes: e.data } });
+            };
+            const handleStateChange = () => {
+                const { inputs } = midiAccess;
+                if (midiInputSelector.options.length === inputs.size + 1) return;
+                if (currentInput) currentInput.removeEventListener('midimessage', handleMidiMessage);
+                midiInputSelector.innerHTML = '<option value="-1" disabled selected>Select...</option>';
+                inputs.forEach((midiInput) => {
+                    const { name, id } = midiInput;
+                    const option = new Option(name, id);
+                    midiInputSelector.add(option);
+                });
+            };
+            handleStateChange();
+            midiAccess.addEventListener('statechange', handleStateChange);
+            midiInputSelector.addEventListener('input', (e) => {
+                if (currentInput) currentInput.removeEventListener('midimessage', handleMidiMessage);
+                const id = e.target.value;
+                currentInput = midiAccess.inputs.get(id);
+                currentInput.addEventListener('midimessage', handleMidiMessage);
+            });
+        });
+    }
 }
