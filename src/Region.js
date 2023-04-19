@@ -9,9 +9,11 @@ class Region extends PIXI.Container {
         this.interactive = true;
         this.background = new PIXI.Graphics();
         this.hitAreaRight = new PIXI.Graphics();
+        this.hitAreaLeft = new PIXI.Graphics();
 
         this.move = false;
-        this.resize = false;
+        this.resizeLeft = false;
+        this.resizeRight = false;
 
         this.state = state;
         this.rectMap = {};
@@ -19,8 +21,6 @@ class Region extends PIXI.Container {
 
         this.moveStartX = 0;
         this.moveStartY = 0;
-        this.regionStartX = 0;
-        this.regionStartY = 0;
         
         this.addChild(this.background);
         this.drawBackground();
@@ -35,48 +35,53 @@ class Region extends PIXI.Container {
         this.state = state;
     }
 
+
     drawBackground(color = 0x000000) {
         this.background.clear();
         this.background.beginFill(0xF1DEDC);
         this.background.lineStyle({width: 1, color: color});
-        this.background.drawRect(1, 0, this.regionWidthEnd-1, this.regionHeight-1);
+        this.background.drawRect(this.regionWidthStart, 0, this.regionWidthEnd - this.regionWidthStart, this.regionHeight);
     }
 
     drawHitArea() {
         //create hit area at the bottom right corner of the region
         // i want a pretty angle at the bottom right corner
         this.hitAreaRight.clear();
-        this.hitAreaRight.interactive = true;
         this.hitAreaRight.beginFill(0x000000, 1);
         this.hitAreaRight.drawRect(this.regionWidthEnd - 30, this.regionHeight - 30, 29, 29);
         this.hitAreaRight.endFill();
         this.addChild(this.hitAreaRight);
+
+        //create hit area at the bottom left corner of the region
+        // i want a pretty angle at the bottom right corner
+        this.hitAreaLeft.clear();
+        this.hitAreaLeft.beginFill(0x000000, 1);
+        this.hitAreaLeft.drawRect(this.regionWidthStart, this.regionHeight - 30, 29, 29);
+        this.hitAreaLeft.endFill();
+        this.addChild(this.hitAreaLeft);
     }
 
     initControls() {
         this.hitAreaRight.interactive = true;
+        this.hitAreaLeft.interactive = true;
 
         this.on("pointerdown", this.onClickStart, this);
 
         this.pixiApp.stage.on("pointerup", this.onEnd, this);
         this.pixiApp.stage.on("pointerupoutside", this.onEnd, this);
-
-        this.hitAreaRight.on("pointerdown", this.onResizeStart, this);
-    }
-
-    onResizeStart(event) {
-        console.log("onResizeStart");
     }
 
     onClickStart(event) {
         //check who is clicked
+        if(event.target == this.hitAreaLeft){
+            this.resizeLeft = true;
+            this.pixiApp.stage.on("pointermove", this.onResizeMove, this);
+        }
         if(event.target == this.hitAreaRight){
-            console.log("onResizeStart");
-            this.resize = true;
+            this.resizeRight = true;
             this.pixiApp.stage.on("pointermove", this.onResizeMove, this);
         }
         else if(event.target == this){
-            console.log("onMoveStart");
             this.move = true;
             this.moveStartX = event.data.global.x;
             this.moveStartY = event.data.global.y;
@@ -85,36 +90,48 @@ class Region extends PIXI.Container {
     }
 
     onResizeMove(event) {
-        if(this.resize){
-            console.log("onResizeMove");
+        if(this.resizeRight){
+
+            
+
             this.regionWidthEnd = event.data.global.x;
-            this.hitAreaRight.position.x = this.regionWidthEnd - 30;
+            //this.hitAreaRight.position.x = this.regionWidthEnd - 30;
             this.drawBackground();
+            this.drawHitArea();
+        } else if (this.resizeLeft){
+            this.regionWidthStart = event.data.global.x;
+            //this.hitAreaLeft.position.x = this.regionWidthStart;
+            this.drawBackground();
+            this.drawHitArea();
         }
     }
 
     onMove(event) {
         if(this.move){
-            console.log("onMove");
-
-            this.background.position.x = this.background.position.x + event.data.global.x - this.moveStartX;
-            //this.background.position.y = this.background.position.y + event.data.global.y - this.moveStartY;
-            this.hitAreaRight.position.x = this.hitAreaRight.position.x + event.data.global.x - this.moveStartX;
-            //this.hitAreaRight.position.y = this.hitAreaRight.position.y + event.data.global.y - this.moveStartY;
+            console.log("move");
+            //check if the region is out of the screen
+            if(this.regionWidthStart + event.data.global.x - this.moveStartX < 0){
+                this.regionWidthStart = 0;
+            } else if(this.regionWidthEnd + event.data.global.x - this.moveStartX > this.pixiApp.renderer.width){
+                this.regionWidthEnd = this.pixiApp.renderer.width;
+            } else {
+                this.regionWidthStart += event.data.global.x - this.moveStartX;
+                this.regionWidthEnd += event.data.global.x - this.moveStartX;
+            }
             this.moveStartX = event.data.global.x;
             this.moveStartY = event.data.global.y;
+            this.drawBackground();
+            this.drawHitArea();
         }
     }
 
     onEnd() {
         if(this.move){
-            console.log("onMoveEnd");
             this.move = false;
             this.pixiApp.stage.off("pointermove", this.onResizeMove, this);
         }
-        if(this.resize){
-            console.log("onResizeEnd");
-            this.resize = false;
+        if(this.resizeRight || this.resizeLeft){
+            this.resizeRight = false;
             this.pixiApp.stage.off("pointermove", this.onResizeMove, this);
         }
     }
