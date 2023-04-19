@@ -1,0 +1,131 @@
+.wave .waveform {
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.wave .playhead {
+    border: 1px solid black;
+    border-radius: 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+
+.vu-meter canvas{
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.wave {
+    height: 111px;
+    width: 611px;
+    position: relative;
+    z-index: -10;
+    overflow: hidden;
+}
+
+
+.loading {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loading-gif {
+    height: 50px;
+    width: auto;
+}
+
+.plugins {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    width: 500px;
+}
+
+.example-container {
+    margin-left: 332px;
+}
+
+.example {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 200px;
+}
+
+.example.plugin {
+    height: 590px;
+}
+
+.tutorial {
+    display: block;
+    max-width: 900px;
+    padding-top: 30px;
+}
+
+p {
+    font-size: 17px;
+    padding-top: 10px;
+}
+
+h3 {
+    padding-top: 30px !important;
+}
+
+h2 {
+    padding-top: 30px !important;
+}
+
+pre {
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    border-radius: 10px;
+}
+
+.ui.vertical.footer.segment {
+    padding-left: 280px;
+    width: 100%;
+    margin-top: 100px;
+    background-color: #FAFAFA;
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+.ui.stackable.menu.huge {
+    background-color: #FAFAFA;
+}
+
+.pusher {
+    width: auto;
+}
+
+.keyboard {
+    width: 80%;
+    padding-top: 20px;
+}
+
+.pianoroll {
+    width: 80%;
+    height: 500px;
+    overflow-y: auto;    
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.synth {
+    height: 340px;
+    padding-top: 20px;
+}
+
+.demo-controls {
+    margin: 10px;
+}

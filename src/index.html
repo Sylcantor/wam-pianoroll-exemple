@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example 7 : Pianoroll using transport events</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/wam-logo.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/themes/prism.min.css,npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <link rel="stylesheet" type="text/css" href="../lib/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.js"></script>
+
+    <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+<body>
+
+<div class="example-container">
+    <h2 id="demo" class="ui dividing header">
+        Example : Pianoroll using transport events
+    </h2>
+
+    <button id="btn-start-demo" class="ui button">Start Demo</button>
+
+    <div id="demo-div" style="display: none">
+        <div id="loading-wheel" class="loading">
+            <img id="loading-gif" src="../assets/images/circle-loading.gif" alt="loading">
+        </div>
+
+        <div id="widget-loading" style="display: none">
+            <div class="synth">
+                <div id="mount2"></div>
+            </div>
+            <div class="demo-controls">
+                <button id="btn-start" class="ui button">Start</button>
+                <input id="tempo-display-input" value="120">
+                <span id="tempo-display-label">bpm</span>
+            </div>
+            <div class="pianoroll">
+                <div id="mount1"></div>
+            </div>
+            <br></br>
+            <div id="midiTrack"></div>
+        </div>
+    </div>
+
+<div>
+    <br>
+</div>
+
+<script src="./index.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0,npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+</body>
+</html>
