@@ -88,16 +88,18 @@ class Region extends PIXI.Container {
     }
 
     onResizeMove(event) {
-        if(this.resizeRight){
+        if(this.resizeRight && event.data.global.x >= this.regionWidthStart){
             this.regionWidthEnd = event.data.global.x;
             //this.hitAreaRight.position.x = this.regionWidthEnd - 30;
             this.drawBackground();
             this.drawHitArea();
-        } else if (this.resizeLeft){
+            
+        } else if (this.resizeLeft && event.data.global.x <= this.regionWidthEnd){
             this.regionWidthStart = event.data.global.x;
             //this.hitAreaLeft.position.x = this.regionWidthStart;
             this.drawBackground();
             this.drawHitArea();
+        
         }
         this.renderNotes();
     }
