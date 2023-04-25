@@ -11,6 +11,12 @@ class Region extends PIXI.Container {
         this.hitAreaRight = new PIXI.Graphics();
         this.hitAreaLeft = new PIXI.Graphics();
 
+        this.rectWidth = this.pixiApp.view.width / 16;
+        this.rectHeight = this.pixiApp.view.height / 128;
+
+        this.rectWidth = this.rectWidth/2;
+        this.rectHeight = this.rectHeight/2;
+
         this.move = false;
         this.resizeLeft = false;
         this.resizeRight = false;
@@ -32,7 +38,6 @@ class Region extends PIXI.Container {
     updateState(state) {
         this.state = state;
     }
-
 
     drawBackground(color = 0x000000) {
         this.background.clear();
@@ -106,12 +111,13 @@ class Region extends PIXI.Container {
 
     onMove(event) {
         if(this.move){
-            console.log("move");
+            //console.log("move");
             //check if the region is out of the screen
             if(this.regionWidthStart + event.data.global.x - this.moveStartX < 0){
                 this.regionWidthStart = 0;
-            } else if(this.regionWidthEnd + event.data.global.x - this.moveStartX > this.pixiApp.renderer.width){
-                this.regionWidthEnd = this.pixiApp.renderer.width;
+            } else if(this.regionWidthEnd + event.data.global.x - this.moveStartX > this.pixiApp.view.width){
+                this.regionWidthEnd = this.pixiApp.view.width;
+
             } else {
                 this.regionWidthStart += event.data.global.x - this.moveStartX;
                 this.regionWidthEnd += event.data.global.x - this.moveStartX;
@@ -125,6 +131,7 @@ class Region extends PIXI.Container {
     }
 
     onEnd() {
+        //console.log("end");
         if(this.move){
             this.move = false;
             this.pixiApp.stage.off("pointermove", this.onResizeMove, this);
@@ -137,10 +144,8 @@ class Region extends PIXI.Container {
 
     renderNotes(){
         
-
-
-        const rectWidth = this.pixiApp.renderer.width / 16;
-        const rectHeight = this.pixiApp.renderer.height / 128;
+        const rectWidth =  this.rectWidth;
+        const rectHeight = this.rectHeight;
 
         const displayedRectIds = new Set();
 

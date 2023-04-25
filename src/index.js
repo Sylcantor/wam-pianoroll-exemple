@@ -1,4 +1,4 @@
-import VuMeter from "../lib/utils/vu-meter.js";
+//import VuMeter from "../lib/utils/vu-meter.js";
 
 const plugin1Url = "../burns-audio-wam/src/plugins/pianoroll/dist/index.js";
 const plugin2Url = "https://mainline.i3s.unice.fr/wam2/packages/obxd/index.js";
@@ -7,7 +7,7 @@ let audioCtx;
 
 const btnStart = document.getElementById("btn-start");
 const inputTempo = document.getElementById("tempo-display-input");
-const vuMeterCanvas = document.getElementById("canvas2");
+//const vuMeterCanvas = document.getElementById("canvas2");
 const btnStartDemo = document.getElementById("btn-start-demo");
 const demoDiv = document.getElementById("demo-div");
 const widgetLoadingDiv = document.getElementById("widget-loading");

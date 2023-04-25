@@ -84,7 +84,6 @@ export class ClipSettingsView extends Component<ClipSettingsProps, any> {
         if (isNaN(length) || length < 1) {
             length = 1
         }
-
         let state = this.props.clip.getState()
         state.length = (length * 96)
         this.props.clip.setState(state)

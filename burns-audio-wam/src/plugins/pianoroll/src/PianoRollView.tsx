@@ -75,7 +75,6 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
     
     constructor() {
         super()
-
         this.state = {
             showSettingsModal: false,
         }
@@ -152,6 +151,7 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
         var tick = this.position + ((x-Design.gutterWidth) / this.canvasRenderer.facts.tickWidth!);
         tick = tick - (tick % clip.quantize)
 
+        //console.log("tick :",tick)
         let index = Math.floor((this.totalHeight - y)/Design.cellHeight);
         if (index >= this.notes.length) {
             return
@@ -180,7 +180,6 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
         let clip = this.props.pianoRoll.getClip(this.props.clipId)
         
         let tick = Math.floor(this.position) + (Math.floor((x-Design.gutterWidth) / this.canvasRenderer.facts.cellWidth) * clip.quantize);
-        console.log("tick", tick)
         if (tick > this.state.layingNewNote!.tick) {
             this.setState({layingNewNote: {
                 tick: this.state.layingNewNote!.tick,
@@ -214,7 +213,6 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
                 let timeElapsed = this.props.plugin.audioContext.currentTime - transport.currentBarStarted
     
                 let beatPosition = (transport.currentBar * transport.timeSigNumerator) + ((transport.tempo/60.0) * timeElapsed)
-    
                 let tickPosition = Math.floor(beatPosition * PPQN)
                 let clipPosition = tickPosition % clip.state.length;
     
@@ -335,7 +333,6 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
     render() {
         h("div", {})
         logger("entering render")
-
         var settingsPanel = null
         if (this.state.showSettingsModal) {
             settingsPanel = <ClipSettingsView pianoRoll={this.props.pianoRoll} clip={this.props.pianoRoll.getClip(this.props.clipId)} onChange={() => this.clipSettingsChanged()} />
@@ -408,7 +405,7 @@ export class PianoRollView extends Component<PianoRollProps, PianoRollState> {
         this.scrubber = svg_rectangle(scrubberLength*positionPercent, 0, scrubberLength * this.zoom, Design.headerHeight, "red")
         this.scrubber.addEventListener("mousedown", this.scrubberMouseDown)
         clipHeader.appendChild(this.scrubber)
-        
+  
         return container
     }
 

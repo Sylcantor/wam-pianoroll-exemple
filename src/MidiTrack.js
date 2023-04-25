@@ -2,9 +2,10 @@ import { Region } from "./Region";
 //rgba(43,65,98,1)
 class MidiTrack {
     constructor(state) {
-        console.log("MidiTrack constructor");
         this.state = state;
-        this.midiTrack = new PIXI.Application({width: 900, height: 200, background: '0xABC798'});
+        this.basicWidth = 900;
+        this.basicHeight = 200;
+        this.midiTrack = new PIXI.Application({width: this.basicWidth*2, height: this.basicHeight, background: '0xABC798'});
         this.midiTrack.stage.interactive = true;
         this.midiTrack.stage.hitArea = this.midiTrack.screen;
         this.pixijsContainer = document.querySelector("#midiTrack");
@@ -25,11 +26,11 @@ class MidiTrack {
 
     updateState(state) {
         this.state = state;
+        //this.midiTrack.view.width = this.basicWidth * (state.clip.state.length/96);
         this.selectedContainer.updateState(state);
     }
 
     render() {
-        console.log("MidiTrack render");
         this.selectedContainer.renderNotes();
     }
 }

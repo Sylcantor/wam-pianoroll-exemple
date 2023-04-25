@@ -53,8 +53,9 @@ export class NoteCanvasRenderer {
 
     calculateFacts(state: NoteCanvasRenderState): NoteCanvasRenderFacts {
         let visibleTicks = state.clip.state.length * state.horizontalZoom;
-        let tickWidth = (state.width - Design.gutterWidth) / visibleTicks;
-
+        //console.log(state.clip.state.length/96)
+        let tickWidth = ((state.width - Design.gutterWidth) / 96);
+        //console.log(tickWidth);
         return {
             visibleTicks,
             tickWidth,
@@ -65,7 +66,7 @@ export class NoteCanvasRenderer {
     }
 
     dimensionsChanged(newState: NoteCanvasRenderState): boolean {
-        return !this.oldState || this.oldState.width != newState.width || this.oldState.height != newState.height
+        return !this.oldState || this.oldState.width != newState.width || this.oldState.height != newState.height || this.oldState.clip.getState() != newState.clip.state
     }
 
     visibleNotesChanged(newState: NoteCanvasRenderState): boolean {
@@ -81,6 +82,7 @@ export class NoteCanvasRenderer {
     }
 
     render(state: NoteCanvasRenderState) {
+
         const dimensionsChanged = this.dimensionsChanged(state)
         const horizontalChanged = !this.oldState || this.oldState.horizontalZoom != state.horizontalZoom || this.oldState.position != state.position
         const visibleNotesChanged = this.visibleNotesChanged(state)
@@ -106,8 +108,8 @@ export class NoteCanvasRenderer {
 
         if (dimensionsChanged) {
             canvas.style.height = `${state.height}px`
-            canvas.style.width = `${state.width}px`
-            canvas.width = state.width * ratio
+            canvas.style.width = `${state.width * (state.clip.state.length / 96)}px`
+            canvas.width = state.width * ratio * (state.clip.state.length / 96)
             canvas.height = state.height * ratio
 
             playhead.height = state.height
@@ -188,7 +190,6 @@ export class NoteCanvasRenderer {
         }
 
         this.oldState = state
-
         return canvas
     }
 
@@ -208,8 +209,8 @@ export class NoteCanvasRenderer {
             ctx.lineWidth = 1
             const y = state.height-Design.cellHeight*(i+1)
 
-            rect(ctx, 0, y, state.width, Design.cellHeight, mainColor)
-            line(ctx, 0, y, state.width, y, 1, "gray")
+            rect(ctx, 0, y, state.width*(state.clip.state.length/96), Design.cellHeight, mainColor)
+            line(ctx, 0, y, state.width*(state.clip.state.length/96), y, 1, "gray")
 
             // gutter
             let gutterColor = note.blackKey ? "black" : "white"
